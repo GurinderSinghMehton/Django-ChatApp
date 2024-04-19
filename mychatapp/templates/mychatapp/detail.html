@@ -1,0 +1,225 @@
+{% extends "mychatapp/base.html" %} {% block content %}
+<style>
+    .forms{
+      border: 1px solid slateblue;
+      width: 100%;
+      border-radius: 5px;
+      padding: 10px 10px;
+      margin: 10px;
+      font-size: 18px;
+    }
+
+    #myform {
+      width: 90%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      flex-grow: 0;
+      align-items: center;
+    }
+
+    #chat-box-sent{
+      display: flex;
+      flex-direction: column;
+    }
+    
+    
+    .sub-container {
+      height: 100%;
+      width: auto;
+      padding: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-direction: column;
+      overflow-y: auto;
+    }
+    
+    .chat-body {
+      overflow-y: auto;
+      width: 100%
+    }
+
+    .chat-body::-webkit-scrollbar {
+      display: none;
+    }
+    
+    .chat-box-received,
+    .chat-box-sent {
+      width: 200px;
+      height: auto;
+      font-size: 20px;
+      font-family: 'Courier New', Courier, monospace;
+      background-color: slateblue;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      border-radius: 10px;
+    }
+
+    .chat-box-received{
+      margin-left: 0;
+    }
+
+    .chat-box-sent {
+      background-color: rebeccapurple;
+      color: white;
+    }
+
+    
+  }
+</style>
+
+<div class="chat-container" style="height: 90vh">
+  <div class="identity">
+    <div>
+      <a href="{% url 'index' %}">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          x="0px"
+          y="0px"
+          width="40"
+          height="40"
+          viewBox="0 0 24 24"
+        >
+          <path
+            d="M18,21H6c-1.657,0-3-1.343-3-3V8.765c0-1.09,0.591-2.093,1.543-2.622l6-3.333	c0.906-0.503,2.008-0.503,2.914,0l6,3.333C20.409,6.672,21,7.676,21,8.765V18C21,19.657,19.657,21,18,21z"
+            opacity=".35"
+          ></path>
+          <path
+            d="M15,21H9v-6c0-1.105,0.895-2,2-2h2c1.105,0,2,0.895,2,2V21z"
+          ></path>
+        </svg>
+      </a>
+    </div>
+
+    <h3>{{friend.profile.name}}</h3>
+
+    <div class="pro-pic">
+      <img src="{{friend.profile.pic.url}}" alt="profile-picture" />
+    </div>
+  </div>
+
+  <div class="sub-container">
+    <div class="chat-body" id="chat-body">
+      <div id="chat-box-sent">
+        {% for chat in chats %} 
+            {% if chat.msg_sender == user and chat.msg_receiver == profile %}
+
+                <div class="chat-box chat-box-sent">{{chat}}</div>
+
+            {% elif chat.msg_sender == profile and chat.msg_receiver == user %}
+
+                <div class="chat-box chat-box-received">{{chat}}</div>
+
+            {% endif %} 
+        {% endfor %}
+      </div>
+    </div>
+
+    <form action="" id="myform" method="POST">
+      {% csrf_token %} {{form.body}}
+
+      <button type="submit" id="submit">Send</button>
+    </form>
+  </div>
+</div>
+
+<script>
+  function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== "") {
+      const cookies = document.cookie.split(";");
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        // Does this cookie string begin with the name we want?
+        if (cookie.substring(0, name.length + 1) === name + "=") {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookieValue;
+  }
+  const csrftoken = getCookie("csrftoken");
+
+  let form = document.getElementById("myform");
+  form.addEventListener("submit", sendChat);
+
+  function sendChat(e) {
+    e.preventDefault();
+    let chatMessage = document.getElementById("id_body").value;
+    console.log(chatMessage);
+
+    const data = { msg: chatMessage };
+    let url = "{% url 'sent_msg' friend.profile.id %}";
+
+    async function postJSON(data) {
+      try {
+        const response = await fetch(url, {
+          method: "POST", // or 'PUT'
+          headers: {
+            "Content-Type": "application/json",
+            'X-CSRFToken': csrftoken
+          },
+          body: JSON.stringify(data),
+        });
+
+        const result = await response.json();
+        console.log("Success:", result);
+
+        let chat_body = document.getElementById("chat-body");
+        let chatMessageBox = document.createElement("div");
+        chatMessageBox.classList.add("chat-box-sent");
+        chatMessageBox.innerText = result;
+        chat_body.append(chatMessageBox);
+        document.getElementById("id_body").value = "";
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    }
+
+    postJSON(data);
+  }
+
+  setInterval(receiveMessages, 2000)
+
+  let counter = {{ num }}
+  function receiveMessages(){
+
+    let url = "{% url 'rec_msg' friend.profile.id %}";
+
+    async function postJSON() {
+      try {
+        const response = await fetch(url)
+
+        const result = await response.json();
+        console.log("Success:", result);
+
+        if (result.length == 0) {}
+        else{
+          lastMsg = result[result.length - 1]
+          if(counter == result.length){
+            console.log("There is no new chats")
+          }else{
+            let chat_body = document.getElementById("chat-body");
+            let chatMessageBox = document.createElement("div");
+            chatMessageBox.classList.add("chat-box-received");
+            chatMessageBox.innerText = lastMsg;
+            chat_body.append(chatMessageBox);
+            document.getElementById("id_body").value = "";
+          }
+        }
+        counter = result.length
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    }
+
+    postJSON();
+  }
+
+</script>
+
+{% endblock %}

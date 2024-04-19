@@ -1,0 +1,231 @@
+body {
+  background-color: slateblue;
+  display: flex;
+  justify-content: center;
+}
+
+.chat-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(231, 231, 231);
+  width: 25%;
+  border-radius: 30px;
+}
+
+.main {
+  margin: 10px auto;
+  padding: 0 10px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.main-user img {
+  border: 2px solid;
+  border-radius: 50%;
+  border-style: groove;
+  height: 70px;
+  width: 70px;
+}
+
+.logo {
+  font-size: 30px;
+  font-family: Cascadia Code Light !important;
+  font-weight: 700;
+  color: slateblue;
+}
+
+.sub-main {
+  display: flex;
+  text-wrap: wrap;
+  flex-direction: column;
+  margin-right: 30px;
+  font-size: 20px;
+  font-family: Cascadia Code Light !important;
+  color: rgba(0, 0, 0, 0.842);
+}
+
+.header {
+  font-family: Cascadia Code !important;
+  font-size: 30px;
+  font-weight: 800;
+}
+
+.friends-container {
+  font-family: Cascadia Code Light !important;
+  width: 100%;
+  height: 600px;
+  overflow-y: auto;
+}
+
+.friends {
+  background-color: white;
+  border-radius: 25px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin: 10px;
+  box-shadow: 0px 0px 4px black;
+}
+
+.pic {
+  border: 2px solid;
+  border-radius: 50%;
+  border-style: dashed;
+  height: 70px;
+  width: 70px;
+  margin-left: 10px;
+}
+
+.pic img {
+  border-radius: 50%;
+  height: 100%;
+  width: 100%;
+}
+
+.name {
+  text-align: center;
+}
+
+.name h5 {
+  font-size: 15px;
+  font-family: Cascadia Code !important;
+  font-weight: 800;
+}
+
+.time_new_msg {
+  width: auto;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.time_new_msg p {
+  font-size: 14px;
+}
+
+.msg {
+  width: 40px;
+  height: 40px;
+  background-color: slateblue;
+  border-radius: 50%;
+  text-align: center;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+
+.footer {
+  width: 100%;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding-bottom: 20px;
+}
+
+svg {
+  cursor: pointer;
+}
+
+.identity {
+  width: 100%;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.identity h3 {
+  font-size: 20px;
+  font-family: Cascadia Code Light !important;
+  font-weight: 700;
+}
+
+.pro-pic {
+  border: 2px solid;
+  border-radius: 50%;
+  border-style: dashed;
+  height: 50px;
+  width: 50px;
+  margin-left: 10px;
+}
+
+.pro-pic img {
+  border-radius: 50%;
+  height: 100%;
+  width: 100%;
+}
+
+.sub-container {
+  height: 100%;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: column;
+}
+
+
+
+#input {
+  width: 70%;
+  height: 30px;
+  border-radius: 10px;
+  padding: 0 10px;
+  font-size: 16px;
+  font-family: sCascadia Code Light !important;
+  outline: none;
+}
+
+.chat-container2 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: column;
+}
+
+button {
+  background-color: slateblue;
+  color: white;
+  width: 100px;
+  height: 35px;
+  border: none;
+  cursor: pointer;
+  border-radius: 10px;
+  font-size: 14px;
+}
+
+.chat-box-sent,
+.chat-box-received {
+  width: 200px;
+  height: auto;
+  font-size: 14px;
+  background-color: slateblue;
+  color: white;
+  margin-left: auto;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  padding: 10px 10px;
+  border-radius: 10px;
+}
+
+.chat-box-received{
+  float: left;
+}
+
+.chat-box-sent {
+  background-color: rebeccapurple;
+  color: white;
+  float: right;
+}
+
